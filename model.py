@@ -1,5 +1,9 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
+from imageData import loadImageData
+
+# load image data
+train_dataset, validation_dataset, class_names = loadImageData()
 
 # import the MobileNetV3Large model from Keras applications
 base_model = tf.keras.applications.MobileNetV3Large(

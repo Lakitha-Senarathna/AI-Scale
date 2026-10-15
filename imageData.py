@@ -1,34 +1,38 @@
 import tensorflow as tf
-import os
-import pathlib
+from pathlib import Path
 
-dataset_URL = ""
+# image directory
+DATA_DIRECTORY = Path("")
 
-archive_path = tf.keras.utils.get_file(
-    origin=dataset_URL, 
-    fname="flower_photos.tgz", 
-    extract=True
-    )
+# configuration parameters for loading image data
+BATCH_SIZE = 32
+IMAGE_SIZE = (224, 224)
+SEED  = 123
+VALIDATION_SPLIT = 0.2
 
-data_dir = pathlib.Path(archive_path).parent / "flower_photos"
+# load image data from directory and split into training and validation datasets
+def loadImageData():
 
-batch_size = 32
-image_size = (224, 224)
-
-train_dataset = tf.keras.utils.image_dataset_from_directory(
-    data_dir,
-    validation_split=0.2,
+    train_dataset = tf.keras.utils.image_dataset_from_directory(
+    DATA_DIRECTORY,
+    validation_split = VALIDATION_SPLIT,
+    seed = SEED,
     subset = "training",
     shuffle = True,
-    batch_size = batch_size,
-    image_size = image_size
-)
+    batch_size = BATCH_SIZE,
+    image_size = IMAGE_SIZE 
+    )
 
-validation_dataset = tf.keras.utils.image_dataset_from_directory(
-    data_dir,
-    validation_split=0.2,
+    validation_dataset = tf.keras.utils.image_dataset_from_directory(
+    DATA_DIRECTORY,
+    validation_split = VALIDATION_SPLIT,
+    seed = SEED,
     subset = "validation",
     shuffle = True,
-    batch_size = batch_size,
-    image_size = image_size
-)
+    batch_size = BATCH_SIZE,
+    image_size = IMAGE_SIZE
+    )
+
+    class_names = train_dataset.class_names
+
+    return train_dataset, validation_dataset, class_names
