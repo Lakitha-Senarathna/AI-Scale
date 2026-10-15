@@ -28,7 +28,13 @@ model = tf.keras.Model(inputs=inputs, outputs=outputs)
 
 # configure the model for training and evaluation
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
+
+# training the model
+model.fit(
+    train_dataset,
+    validation_data=val_dataset,
+    epochs=10)
