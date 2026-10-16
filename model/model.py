@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
-from imageDataLoad import loadImageData
+from model.imageDataLoad import loadImageData
 
 # load image data
 train_dataset, validation_dataset, class_names = loadImageData()

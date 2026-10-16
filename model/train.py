@@ -1,6 +1,6 @@
 import tensorflow as tf
-from model import buildModel
-from imageDataLoad import loadImageData
+from model.model import buildModel
+from model.imageDataLoad import loadImageData
 
 # load image data
 train_dataset, validation_dataset, class_names = loadImageData()
