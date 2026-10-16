@@ -19,6 +19,20 @@ def buildModel():
     # new classification head
     inputs = tf.keras.layers.Input(shape = (224, 224, 3))
 
+    # data augmentation layers
+    data_augmentation = tf.keras.Sequential([
+        tf.keras.layers.RandomFlip("horizontal"),
+        tf.keras.layers.RandomRotation(0.05),
+        tf.keras.layers.RandomZoom(0.10),
+        tf.keras.layers.RandomTranslation(
+            height_factor=0.05,
+            width_factor=0.05
+        ),
+        tf.keras.layers.RandomContrast(0.10),
+    ])
+
+    x = data_augmentation(inputs)
+
     # keep the base model in inference mode
     x = base_model(inputs, training = False)
 
