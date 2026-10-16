@@ -35,4 +35,9 @@ def loadImageData():
 
     class_names = train_dataset.class_names
 
+    # optimize the datasets for performance
+    AUTOTUNE = tf.data.AUTOTUNE
+    train_dataset = train_dataset.cache().prefetch(buffer_size = AUTOTUNE)
+    validation_dataset = validation_dataset.cache().prefetch(buffer_size = AUTOTUNE)
+
     return train_dataset, validation_dataset, class_names
