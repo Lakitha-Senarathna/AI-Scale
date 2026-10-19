@@ -6,7 +6,7 @@ from model.imageDataLoad import loadImageData
 train_dataset, validation_dataset, class_names = loadImageData()
 
 # build the model
-model = buildModel()
+model, featureExtractor = buildModel(class_names)
 
 def trainModel():
 
@@ -23,3 +23,4 @@ def trainModel():
         validation_data=validation_dataset,
         epochs = 10
     )
+

@@ -1,9 +1,5 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
-from imageDataLoad import loadImageData
-
-# load image data
-train_dataset, validation_dataset, class_names = loadImageData()
 
 def buildModel(class_names):
     # import the MobileNetV3Large model from Keras applications
@@ -44,14 +40,27 @@ def buildModel(class_names):
     x = tf.keras.layers.BatchNormalization(name = "batchNormalization")(x)
     
     embeddings = tf.keras.layers.UnitNormalization(axis = -1, name = "unitNormalization")(x)
+
+    scaleEmbeddings = tf.keras.layers.Rescaling(scale = 10.0, name = "scaleEmbeddings")(embeddings)
     
     outputs = tf.keras.layers.Dense(
         len(class_names), 
         activation='softmax',
         name = "classificationHead"
-        )(embeddings)
+        )(scaleEmbeddings)
 
-    # assemble the complete model
-    model = tf.keras.Model(inputs=inputs, outputs=outputs)
+    # model with final produce classifier
+    model = tf.keras.Model(
+        inputs=inputs, 
+        outputs=outputs, 
+        name = "produceClassifier"
+        )
 
-    return model
+    # feature extractor model with final classifier removed, used for embedding extraction
+    featureExtractor = tf.keras.Model(
+        inputs=inputs, 
+        outputs=scaleEmbeddings, 
+        name = "featureExtractor"
+        )
+
+    return model, featureExtractor
