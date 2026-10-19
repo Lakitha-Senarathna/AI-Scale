@@ -16,7 +16,7 @@ def buildModel(class_names):
     # new classification head
     inputs = tf.keras.layers.Input(shape = (224, 224, 3), name = "imageInput")
 
-    # data augmentation layers
+    # data augmentation layer
     data_augmentation = tf.keras.Sequential([
         tf.keras.layers.RandomFlip("horizontal_and_vertical"),
         tf.keras.layers.RandomRotation(0.05),
@@ -39,28 +39,39 @@ def buildModel(class_names):
     x = tf.keras.layers.Dense(128, use_bias=False, name = "produceEmbedding")(x)
     x = tf.keras.layers.BatchNormalization(name = "batchNormalization")(x)
     
-    embeddings = tf.keras.layers.UnitNormalization(axis = -1, name = "unitNormalization")(x)
+    # normalize the embeddings to unit length
+    embeddings = tf.keras.layers.UnitNormalization(
+        axis = -1, 
+        name = "unitNormalization"
+        )(x)
 
-    scaleEmbeddings = tf.keras.layers.Rescaling(scale = 10.0, name = "scaleEmbeddings")(embeddings)
+    # scale the embeddings so that the classification head can learn a better decision boundary
+    scaleEmbeddings = tf.keras.layers.Rescaling(
+        scale = 16.0, 
+        name = "scaleEmbeddings"
+        )(embeddings)
     
+    # final classification head
     outputs = tf.keras.layers.Dense(
         len(class_names), 
-        activation='softmax',
+        use_bias = False,
+        kernel_constraint = tf.keras.constraints.UnitNorm(axis = 0),
+        activation = 'softmax',
         name = "classificationHead"
         )(scaleEmbeddings)
 
-    # model with final produce classifier
-    model = tf.keras.Model(
-        inputs=inputs, 
-        outputs=outputs, 
+    # model with final classiification head
+    baseModel = tf.keras.Model(
+        inputs = inputs, 
+        outputs = outputs, 
         name = "produceClassifier"
         )
 
-    # feature extractor model with final classifier removed, used for embedding extraction
+    # feature extractor model with final classification head removed, used for embedding extraction
     featureExtractor = tf.keras.Model(
-        inputs=inputs, 
-        outputs=scaleEmbeddings, 
+        inputs = inputs, 
+        outputs = embeddings, 
         name = "featureExtractor"
         )
 
-    return model, featureExtractor
+    return baseModel, featureExtractor

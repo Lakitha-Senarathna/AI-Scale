@@ -20,7 +20,7 @@ def trainModel():
     # training the model
     model.fit(
         train_dataset,
-        validation_data=validation_dataset,
+        validation_data = validation_dataset,
         epochs = 10
     )
 

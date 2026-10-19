@@ -1,6 +1,6 @@
 from model.model import buildModel
 
-model, featureExtractor = buildModel()
+baseModel, featureExtractor = buildModel()
 
 featureExtractor.save("featureExtractor.keras")
-model.save("produceClassifier.keras")
+baseModel.save("produceClassifier.keras")
