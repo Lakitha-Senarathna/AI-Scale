@@ -4,7 +4,7 @@ from model.imageDataLoad import loadImageData
 
 def trainModel():
     # load image data
-    train_dataset, validation_dataset, class_names = loadImageData()
+    train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
     # build the model
     classifierModel, featureExtractor = buildModel(class_names)
@@ -25,7 +25,7 @@ def trainModel():
         )
 
         tf.keras.callbascks.ModelCheckpoint(
-            filepath = "produceClassifier.keras",
+            filepath = "bestClassifier.keras",
             monitor = 'val_loss',
             save_best_only = True
         )
@@ -41,7 +41,8 @@ def trainModel():
     classifierModel.fit(
         train_dataset,
         validation_data = validation_dataset,
-        epochs = 15,
-        callbacks = callbacks       
+        epochs = 50,
+        callbacks = callbacks,
+        class_weight = class_weight       
     )
 
