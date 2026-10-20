@@ -7,38 +7,42 @@ def trainModel():
     train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
     # build the model
-    classifierModel, featureExtractor = buildModel(class_names)
+    classifierModel = buildModel(class_names)
 
     # configure the model for training and evaluation
     classifierModel.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-3),
+        optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-4),
         loss = 'sparse_categorical_crossentropy',
         metrics = ['accuracy']
     )
 
     # callbacks for early stopping
     callbacks = [
+        # early stopping to prevent overfitting
         tf.keras.callbacks.EarlyStopping(
             monitor = 'val_loss',
             patience = 5,
             restore_best_weights = True
         )
 
-        tf.keras.callbascks.ModelCheckpoint(
+        # save the best model based on validation loss
+        tf.keras.callbacks.ModelCheckpoint(
             filepath = "bestClassifier.keras",
             monitor = 'val_loss',
             save_best_only = True
         )
 
+        # reduce learning rate when validation loss plateaus
         tf.keras.callbacks.ReduceLRonPlateau(
             monitor = 'val_loss',
             factor = 0.2,
-            patience = 2
+            patience = 2,
+            min_lr = 1e-6
         )
     ]
 
     # training the model
-    classifierModel.fit(
+    history = classifierModel.fit(
         train_dataset,
         validation_data = validation_dataset,
         epochs = 50,
@@ -46,3 +50,4 @@ def trainModel():
         class_weight = class_weight       
     )
 
+return classifiermodel, history

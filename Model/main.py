@@ -1,6 +1,3 @@
-from model.model import buildModel
+from model.train import trainModel
 
-baseModel, featureExtractor = buildModel()
-
-featureExtractor.save("featureExtractor.keras")
-baseModel.save("produceClassifier.keras")
+classifierModel, history = trainModel()

@@ -67,11 +67,4 @@ def buildModel(class_names):
         name = "produceClassifier"
         )
 
-    # feature extractor model with final classification head removed, used for embedding extraction
-    featureExtractor = tf.keras.Model(
-        inputs = inputs, 
-        outputs = embeddings, 
-        name = "featureExtractor"
-        )
-
-    return classifier, featureExtractor
+    return classifier
