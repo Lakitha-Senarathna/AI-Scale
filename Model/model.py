@@ -18,7 +18,7 @@ def buildModel(class_names):
 
     # data augmentation layer
     data_augmentation = tf.keras.Sequential([
-        tf.keras.layers.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomFlip("horizontal"),
         tf.keras.layers.RandomRotation(0.05),
         tf.keras.layers.RandomZoom(0.10),
         tf.keras.layers.RandomTranslation(
@@ -60,10 +60,10 @@ def buildModel(class_names):
         name = "classificationHead"
         )(scaleEmbeddings)
 
-    # model with final classiification head
-    baseModel = tf.keras.Model(
-        inputs = inputs, 
-        outputs = outputs, 
+    # model with final classification head
+    classifier = tf.keras.Model(
+        inputs = inputs,
+        outputs = outputs,
         name = "produceClassifier"
         )
 
@@ -74,4 +74,4 @@ def buildModel(class_names):
         name = "featureExtractor"
         )
 
-    return baseModel, featureExtractor
+    return classifier, featureExtractor
