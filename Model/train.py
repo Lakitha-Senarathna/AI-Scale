@@ -45,7 +45,7 @@ def trainModel():
     history = classifierModel.fit(
         train_dataset,
         validation_data = validation_dataset,
-        epochs = 50,
+        epochs = 15,
         callbacks = callbacks,
         class_weight = class_weight       
     )
