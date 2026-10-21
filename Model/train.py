@@ -23,14 +23,14 @@ def trainModel():
             monitor = 'val_loss',
             patience = 5,
             restore_best_weights = True
-        )
+        ),
 
         # save the best model based on validation loss
         tf.keras.callbacks.ModelCheckpoint(
             filepath = "bestClassifier.keras",
             monitor = 'val_loss',
             save_best_only = True
-        )
+        ),
 
         # reduce learning rate when validation loss plateaus
         tf.keras.callbacks.ReduceLRonPlateau(
@@ -50,4 +50,4 @@ def trainModel():
         class_weight = class_weight       
     )
 
-return classifiermodel, history
+    return classifierModel, history

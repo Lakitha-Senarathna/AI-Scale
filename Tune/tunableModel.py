@@ -19,7 +19,7 @@ def buildModel(class_names, embedding_dim=128, scale=16.0, dropout=0.2, augmenta
 
     # data augmentation layer
     data_augmentation = tf.keras.Sequential([
-        tf.keras.layers.RandomFlip("horizontal"),
+        tf.keras.layers.RandomFlip("horizontal"),,
         tf.keras.layers.RandomRotation(0.05 * augmentation_strength),
         tf.keras.layers.RandomZoom(0.10 * augmentation_strength),
         tf.keras.layers.RandomTranslation(

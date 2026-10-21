@@ -1,12 +1,18 @@
 import tensorflow as tf
 import keras_tuner as kt
-from model.model import buildModel
+from Tune.tunableModel import buildModel
 from model.imageDataLoad import loadImageData
 
 # load image data
 train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
-def tuneModel(embedding_dim, scale, dropout, augmentation_strength):
+def hypermodel(hp):
+
+    # define hyperparameters to tune
+    embedding_dim = hp.Int('embedding_dim', min_value=64, max_value=256, step=32)
+    scale = hp.
+    dropout = hp.Float('dropout', min_value=0.1, max_value=0.5, step=0.1)
+    augmentation_strength = hp.Float('augmentation_strength', min_value=0.5, max_value=2.0, step=0.1)
 
     # build the model
     classifierModel = buildModel(class_names, 
