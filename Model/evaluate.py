@@ -25,7 +25,7 @@ def evaluateModel():
         zero_division=0,
     ))
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(16, 16))
     ConfusionMatrixDisplay.from_predictions(
         y_true,
         y_pred,
