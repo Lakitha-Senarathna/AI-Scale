@@ -9,10 +9,30 @@ train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 def tunable(hp):
 
     # define hyperparameters to tune
-    embedding_dim = hp.Int('embedding_dim', min_value=64, max_value=512, step=32)
-    scale = hp.Float('scale', min_value=8.0, max_value=32.0, step=4.0)
-    dropout = hp.Float('dropout', min_value=0.1, max_value=0.5, step=0.1)
-    augmentation_strength = hp.Float('augmentation_strength', min_value=0.5, max_value=2.0, step=0.5)
+    embedding_dim = hp.Int('embedding_dim',
+        min_value = 64,
+        max_value = 512,
+        step = 32)
+
+    scale = hp.Float('scale',
+        min_value = 8.0,
+        max_value = 32.0,
+        step = 4.0)
+
+    dropout = hp.Float('dropout',
+        min_value = 0.1,
+        max_value = 0.5,
+        step = 0.1)
+
+    augmentation_strength = hp.Float('augmentation_strength',
+        min_value = 0.5,
+        max_value = 2.0,
+        step = 0.5)
+
+    learning_rate = hp.Float('learning_rate', 
+        min_value = 1e-4, 
+        max_value = 1e-3,
+        sampling = 'log')
 
     # build the model
     classifierModel = buildModel(
@@ -28,7 +48,7 @@ def tunable(hp):
 
     # configure the model for training and evaluation
     classifierModel.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-4),
+        optimizer = tf.keras.optimizers.Adam(learning_rate = learning_rate),
         loss = loss,
         metrics = ['accuracy']
     )
