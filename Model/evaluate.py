@@ -1,6 +1,9 @@
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
+from model.imageDataLoad import loadImageData
+
+train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
 y_true, y_pred = [], []
 for images, labels in validation_dataset:
