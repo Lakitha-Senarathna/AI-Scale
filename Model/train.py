@@ -33,7 +33,7 @@ def trainModel():
         ),
 
         # reduce learning rate when validation loss plateaus
-        tf.keras.callbacks.ReduceLRonPlateau(
+        tf.keras.callbacks.ReduceLROnPlateau(
             monitor = 'val_loss',
             factor = 0.2,
             patience = 2,
