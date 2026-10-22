@@ -23,10 +23,13 @@ def tunable(hp):
         augmentation_strength = augmentation_strength
     )
 
+    # define loss for model compilation
+    loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
     # configure the model for training and evaluation
     classifierModel.compile(
         optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-4),
-        loss = 'sparse_categorical_crossentropy',
+        loss = loss,
         metrics = ['accuracy']
     )
 
@@ -47,14 +50,16 @@ tuner = kt.Hyperband(
 callbacks = [
     # early stopping to prevent overfitting
     tf.keras.callbacks.EarlyStopping(
-        monitor = 'val_loss',
+        monitor = 'val_accuracy',
+        mode = 'max',
         patience = 5,
         restore_best_weights = True
     ),
 
     # reduce learning rate when validation loss plateaus
     tf.keras.callbacks.ReduceLROnPlateau(
-        monitor = 'val_loss',
+        monitor = 'val_accuracy',
+        mode = 'max'
         factor = 0.2,
         patience = 2,
         min_lr = 1e-6
