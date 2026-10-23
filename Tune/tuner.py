@@ -95,7 +95,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         train_data,
         validation_data = validation_data,
         class_weight = class_weight,
-        callbacks = callbacks
+        callbacks = callbacks()
     )
 
     # retrieve best hyperparameters
@@ -110,7 +110,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         validation_data = validation_data,
         epochs = 50,
         class_weight = class_weight,
-        callbacks = callbacks
+        callbacks = callbacks()
     )
 
     # save best model
