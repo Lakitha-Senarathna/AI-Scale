@@ -7,7 +7,7 @@ def buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength
         weights='imagenet',
         include_top=False,
         include_preprocessing=True,
-        input_shape=(224, 224, 3)
+        input_shape = (224, 224, 3)
     )
 
     # freeze the pretrained weights of the base model
@@ -26,7 +26,7 @@ def buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength
             width_factor=0.05 * augmentation_strength
         ),
         tf.keras.layers.RandomContrast(0.10 * augmentation_strength),
-        tf.keras.layers.RandomBrightness(factor=0.10 * augmentation_strength)
+        tf.keras.layers.RandomBrightness(factor = 0.10 * augmentation_strength)
     ], name = "dataAugmentation")
 
     x = data_augmentation(inputs)
