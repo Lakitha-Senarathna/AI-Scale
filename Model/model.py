@@ -56,7 +56,6 @@ def buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength
         len(class_names), 
         use_bias = False,
         kernel_constraint = tf.keras.constraints.UnitNorm(axis = 0),
-        activation = 'softmax',
         name = "classificationHead"
         )(scaleEmbeddings)
 

@@ -1,17 +1,12 @@
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
-from model.imageDataLoad import loadImageData
-from model.train import trainModel
 
-def evaluateModel():
-    
-    train_dataset, validation_dataset, class_names, class_weight = loadImageData()
-    classifierModel, history = trainModel()
+def evaluateModel(model, validation_dataset, class_names):
 
     y_true, y_pred = [], []
     for images, labels in validation_dataset:
-        probs = classifierModel.predict_on_batch(images)
+        probs = model.predict_on_batch(images)
         y_pred.append(np.argmax(probs, axis=1))
         y_true.append(labels.numpy())
 
