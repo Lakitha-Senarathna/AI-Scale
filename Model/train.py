@@ -1,6 +1,6 @@
 import tensorflow as tf
-from model.model import buildModel
-from model.imageDataLoad import loadImageData
+from Model.model import buildModel
+from Model.imageDataLoad import loadImageData
 
 def trainModel():
     # load image data

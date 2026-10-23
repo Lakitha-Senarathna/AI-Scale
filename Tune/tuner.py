@@ -1,6 +1,6 @@
 import tensorflow as tf
 import keras_tuner as kt
-from model.model import buildModel
+from Model.model import buildModel
 
 def tunable(hp):
 
