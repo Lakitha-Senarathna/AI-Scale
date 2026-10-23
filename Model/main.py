@@ -9,6 +9,6 @@ train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 #classifierModel, history = trainModel()
 
 # tuned model
-best_tuned_model = tuneModel(train_dataset, validation_dataset, class_weight)
+best_tuned_model = tuneModel(train_dataset, validation_dataset, class_weight, class_names)
 
 evaluateModel(best_tuned_model, validation_dataset, class_names)

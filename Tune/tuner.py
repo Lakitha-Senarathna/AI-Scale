@@ -2,60 +2,64 @@ import tensorflow as tf
 import keras_tuner as kt
 from Model.model import buildModel
 
-def tunable(hp):
+def tunable(class_names):
 
-    # define hyperparameters to tune
-    embedding_dim = hp.Int('embedding_dim',
-        min_value = 64,
-        max_value = 512,
-        step = 32)
+    def hypermodel(hp):
 
-    scale = hp.Float('scale',
-        min_value = 8.0,
-        max_value = 32.0,
-        step = 4.0)
+        # define hyperparameters to tune
+        embedding_dim = hp.Int('embedding_dim',
+            min_value = 64,
+            max_value = 512,
+            step = 32)
 
-    dropout = hp.Float('dropout',
-        min_value = 0.1,
-        max_value = 0.5,
-        step = 0.1)
+        scale = hp.Float('scale',
+            min_value = 8.0,
+            max_value = 32.0,
+            step = 4.0)
 
-    augmentation_strength = hp.Float('augmentation_strength',
-        min_value = 0.5,
-        max_value = 2.0,
-        step = 0.5)
+        dropout = hp.Float('dropout',
+            min_value = 0.1,
+            max_value = 0.5,
+            step = 0.1)
 
-    learning_rate = hp.Float('learning_rate', 
-        min_value = 1e-4, 
-        max_value = 1e-3,
-        sampling = 'log')
+        augmentation_strength = hp.Float('augmentation_strength',
+            min_value = 0.5,
+            max_value = 2.0,
+            step = 0.5)
 
-    # build the model
-    classifierModel = buildModel(
-        class_names, 
-        embedding_dim = embedding_dim,
-        scale = scale,
-        dropout = dropout,
-        augmentation_strength = augmentation_strength
-    )
+        learning_rate = hp.Float('learning_rate', 
+            min_value = 1e-4, 
+            max_value = 1e-3,
+            sampling = 'log')
 
-    # define loss for model compilation
-    loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+        # build the model
+        classifierModel = buildModel(
+            class_names, 
+            embedding_dim = embedding_dim,
+            scale = scale,
+            dropout = dropout,
+            augmentation_strength = augmentation_strength
+        )
 
-    # configure the model for training and evaluation
-    classifierModel.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate = learning_rate),
-        loss = loss,
-        metrics = ['accuracy']
-    )
+        # define loss for model compilation
+        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
-    return classifierModel
+        # configure the model for training and evaluation
+        classifierModel.compile(
+            optimizer = tf.keras.optimizers.Adam(learning_rate = learning_rate),
+            loss = loss,
+            metrics = ['accuracy']
+        )
 
-def tuneModel(train_data, validation_data, class_weight):
+        return classifierModel
+    
+    return hypermodel
+
+def tuneModel(train_data, validation_data, class_weight, class_names):
 
     # define the tuner
     tuner = kt.Hyperband(
-        hypermodel = tunable,
+        hypermodel = tunable(class_names),
         objective = 'val_accuracy',
         max_epochs = 40,
         seed = 42,
