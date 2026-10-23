@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
 
-def buildModel(class_names):
+def buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength):
     # import the MobileNetV3Large model from Keras applications
     base_model = tf.keras.applications.MobileNetV3Large(
         weights='imagenet',
@@ -19,14 +19,14 @@ def buildModel(class_names):
     # data augmentation layer
     data_augmentation = tf.keras.Sequential([
         tf.keras.layers.RandomFlip("horizontal"),
-        tf.keras.layers.RandomRotation(0.05),
-        tf.keras.layers.RandomZoom(0.10),
+        tf.keras.layers.RandomRotation(0.05 * augmentation_strength),
+        tf.keras.layers.RandomZoom(0.10 * augmentation_strength),
         tf.keras.layers.RandomTranslation(
-            height_factor=0.05,
-            width_factor=0.05
+            height_factor=0.05 * augmentation_strength,
+            width_factor=0.05 * augmentation_strength
         ),
-        tf.keras.layers.RandomContrast(0.10),
-        tf.keras.layers.RandomBrightness(factor=0.10)
+        tf.keras.layers.RandomContrast(0.10 * augmentation_strength),
+        tf.keras.layers.RandomBrightness(factor=0.10 * augmentation_strength)
     ], name = "dataAugmentation")
 
     x = data_augmentation(inputs)
@@ -34,9 +34,9 @@ def buildModel(class_names):
 
     # reduce the dimension of the feature maps to 1D vector
     x = tf.keras.layers.GlobalAveragePooling2D(name = "globalAveragePooling")(x)
-    x = tf.keras.layers.Dropout(0.2, name = "dropout")(x)
+    x = tf.keras.layers.Dropout(dropout, name = "dropout")(x)
 
-    x = tf.keras.layers.Dense(128, use_bias=False, name = "produceEmbedding")(x)
+    x = tf.keras.layers.Dense(embedding_dim, use_bias = False, name = "produceEmbedding")(x)
     x = tf.keras.layers.BatchNormalization(name = "batchNormalization")(x)
     
     # normalize the embeddings to unit length
@@ -47,7 +47,7 @@ def buildModel(class_names):
 
     # scale the embeddings so that the classification head can learn a better decision boundary
     scaleEmbeddings = tf.keras.layers.Rescaling(
-        scale = 16.0, 
+        scale = scale, 
         name = "scaleEmbeddings"
         )(embeddings)
     

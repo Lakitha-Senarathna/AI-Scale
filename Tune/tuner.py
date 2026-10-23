@@ -2,6 +2,7 @@ import tensorflow as tf
 import keras_tuner as kt
 from Tune.tunableModel import buildModel
 from model.imageDataLoad import loadImageData
+from model.model import buildModel
 
 # load image data
 train_dataset, validation_dataset, class_names, class_weight = loadImageData()

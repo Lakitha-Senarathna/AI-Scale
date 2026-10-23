@@ -6,8 +6,13 @@ def trainModel():
     # load image data
     train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
+    embedding_dim = 128
+    scale = 16.0
+    dropout = 0.2
+    augmentation_strength = 1  
+
     # build the model
-    classifierModel = buildModel(class_names)
+    classifierModel = buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength)
 
     # configure the model for training and evaluation
     classifierModel.compile(
