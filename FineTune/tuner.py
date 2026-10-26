@@ -2,32 +2,37 @@ import tensorflow as tf
 import keras_tuner as kt
 from Model.model import buildModel
 
-def tunable(class_names):
+def getHyperparameters(class_names):
 
-    def hypermodel(hp):
+    def hyperparameters(hp):
 
         # define hyperparameters to tune
-        embedding_dim = hp.Int('embedding_dim',
+        embedding_dim = hp.Int(
+            'embedding_dim',
             min_value = 64,
             max_value = 512,
             step = 32)
 
-        scale = hp.Float('scale',
+        scale = hp.Float(
+            'scale',
             min_value = 8.0,
             max_value = 32.0,
             step = 4.0)
 
-        dropout = hp.Float('dropout',
+        dropout = hp.Float(
+            'dropout',
             min_value = 0.1,
             max_value = 0.5,
             step = 0.1)
 
-        augmentation_strength = hp.Float('augmentation_strength',
+        augmentation_strength = hp.Float(
+            'augmentation_strength',
             min_value = 0.5,
             max_value = 2.0,
             step = 0.5)
 
-        learning_rate = hp.Float('learning_rate', 
+        learning_rate = hp.Float(
+            'learning_rate', 
             min_value = 1e-4, 
             max_value = 1e-3,
             sampling = 'log')
@@ -53,13 +58,13 @@ def tunable(class_names):
 
         return classifierModel
     
-    return hypermodel
+    return hyperparameters
 
 def tuneModel(train_data, validation_data, class_weight, class_names):
 
     # define the tuner
     tuner = kt.Hyperband(
-        hypermodel = tunable(class_names),
+        hypermodel = getHyperparameters(class_names),
         objective = 'val_accuracy',
         max_epochs = 100,
         seed = 42,
@@ -116,5 +121,6 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
 
     # save best model
     best_model.save("tunedBestModel.keras")
+    print("Tuned Model Saved Successfully")
 
     return best_model
