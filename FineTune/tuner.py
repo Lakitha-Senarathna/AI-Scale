@@ -122,7 +122,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
     try:
         # save best model
         best_model.save("tunedBestModel.keras")
-        print(f"Tuned Model Saved Successfully. Best hyperparameters {best_hyperparameters}")
+        print(f"Tuned Model Saved Successfully. Best hyperparameters {best_hyperparameters.values}")
         
     except Exception as e:
         print(f"Failed to save the model 'tunedBestModel.keras' {e}")
