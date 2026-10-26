@@ -61,11 +61,12 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
     tuner = kt.Hyperband(
         hypermodel = tunable(class_names),
         objective = 'val_accuracy',
-        max_epochs = 40,
+        max_epochs = 100,
         seed = 42,
         factor = 3,
         directory = 'tuner_results',
-        project_name = 'image_classification_tuning'
+        project_name = 'image_classification_tuning',
+        execution_per_trail = 3
     )
 
     def callbacks():
@@ -108,7 +109,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
     history = best_model.fit(
         train_data,
         validation_data = validation_data,
-        epochs = 50,
+        epochs = 100,
         class_weight = class_weight,
         callbacks = callbacks()
     )
