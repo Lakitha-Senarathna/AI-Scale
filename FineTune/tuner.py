@@ -71,7 +71,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         factor = 3,
         directory = 'tuner_results',
         project_name = 'image_classification_tuning',
-        executions_per_trail = 3
+        executions_per_trial = 3
     )
 
     def callbacks():
@@ -119,8 +119,12 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         callbacks = callbacks()
     )
 
-    # save best model
-    best_model.save("tunedBestModel.keras")
-    print("Tuned Model Saved Successfully")
+    try:
+        # save best model
+        best_model.save("tunedBestModel.keras")
+        print(f"Tuned Model Saved Successfully. Best hyperparameters {best_hyperparameters}")
+        
+    except Exception as e:
+        print(f"Failed to save the model 'tunedBestModel.keras' {e}")
 
     return best_model
