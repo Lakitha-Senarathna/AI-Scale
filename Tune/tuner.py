@@ -66,7 +66,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         factor = 3,
         directory = 'tuner_results',
         project_name = 'image_classification_tuning',
-        execution_per_trail = 3
+        executions_per_trail = 3
     )
 
     def callbacks():
