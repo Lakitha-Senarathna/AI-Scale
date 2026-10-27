@@ -5,5 +5,7 @@
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         }
-    ]
+    ],
+    "chat.disableAIFeatures": true,
+    "workbench.editor.empty.hint": "none"
 }
