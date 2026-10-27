@@ -1,7 +1,7 @@
 from Model.evaluate import evaluateModel
 from Model.imageDataLoad import loadImageData
 from Model.train import trainModel
-from Tune.tuner import tuneModel
+from FineTune.tuner import tuneModel
 
 train_dataset, validation_dataset, class_names, class_weight = loadImageData()
 
