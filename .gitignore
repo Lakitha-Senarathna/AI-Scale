@@ -1,0 +1,14 @@
+# virtual environment files
+venv/
+.venv/
+
+# keras tuner results
+tuner_results/
+
+# model files
+*.h5
+*.keras
+logs/
+
+# environment secrets
+.env

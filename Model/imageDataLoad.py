@@ -4,7 +4,7 @@ from pathlib import Path
 from sklearn.utils.class_weight import compute_class_weight
 
 # image directory
-DATA_DIRECTORY = Path("")
+DATA_DIRECTORY = Path(r"C:\Users\Lakitha\Downloads\combinded_archive")
 
 # configuration parameters for loading image data
 BATCH_SIZE = 32
