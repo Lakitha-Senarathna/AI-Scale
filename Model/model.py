@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
 
 def buildModel(class_names, embedding_dim, scale, dropout, augmentation_strength):
     # import the MobileNetV3Large model from Keras applications
