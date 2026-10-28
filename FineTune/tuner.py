@@ -74,6 +74,9 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         executions_per_trial = 3
     )
 
+    # show trial details before training starts
+    tuner.search_space_summary()
+
     def callbacks():
         # callbacks for early stopping and learning rate adjustment
         callbacks = [
