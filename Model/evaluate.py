@@ -21,13 +21,14 @@ def evaluateModel(model, validation_dataset, class_names):
     ))
 
     fig, ax = plt.subplots(figsize = (16, 16))
+    
     ConfusionMatrixDisplay.from_predictions(
         y_true,
         y_pred,
         labels = range(len(class_names)),
         display_labels = class_names,
         xticks_rotation = 45,
-        normalize = "true",       # each row shows the fraction of that class
+        normalize = "true",
         cmap = "Blues",
         ax = ax,
     )
