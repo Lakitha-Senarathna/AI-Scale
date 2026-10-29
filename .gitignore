@@ -9,6 +9,8 @@ ExportedModels/
 # model files
 *.h5
 *.keras
+*.tflite
+*.onnx
 logs/
 
 # environment secrets
