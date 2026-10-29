@@ -1,6 +1,8 @@
 import tensorflow as tf
 import keras_tuner as kt
 from Model.model import buildModel
+from pathlib import Path
+import traceback
 
 def getHyperparameters(class_names):
 
@@ -62,6 +64,9 @@ def getHyperparameters(class_names):
 
 def tuneModel(train_data, validation_data, class_weight, class_names):
 
+    # define tuner result directory
+    directory = Path("tuner_results")
+
     # define the tuner
     tuner = kt.Hyperband(
         hypermodel = getHyperparameters(class_names),
@@ -69,7 +74,7 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
         max_epochs = 100,
         seed = 42,
         factor = 3,
-        directory = 'tuner_results',
+        directory = str(directory),
         project_name = 'image_classification_tuning',
         executions_per_trial = 3
     )
@@ -123,11 +128,16 @@ def tuneModel(train_data, validation_data, class_weight, class_names):
     )
 
     try:
+        # model destination directory
+        directory = Path("ExportedModels/Tuned") / "tunedBestModel.keras"
+
         # save best model
-        best_model.save("tunedBestModel.keras")
-        print(f"Tuned Model Saved Successfully. Best hyperparameters {best_hyperparameters.values}")
+        best_model.save(str(directory))
+        print("Tuned Model Saved Successfully")
+        print(f"Best hyperparameters {best_hyperparameters.values}")
         
-    except Exception as e:
-        print(f"Failed to save the model 'tunedBestModel.keras' {e}")
+    except Exception:
+        print("Failed to save the model")
+        traceback.print_exc()
 
     return best_model

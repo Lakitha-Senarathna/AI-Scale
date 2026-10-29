@@ -4,6 +4,7 @@ venv/
 
 # keras tuner results
 tuner_results/
+ExportedModels/
 
 # model files
 *.h5
