@@ -6,8 +6,8 @@ import traceback
 def export2ONNX():
     try:
         # load model
-        model_path = Path("ExportedModels/Tuned") / "tunedBestModel.keras"
-        model = tf.keras.models.load_model(model_path)
+        model_path = Path("ExportedModels/Tuned/tunedBestModel.keras")
+        model = tf.keras.models.load_model(str(model_path))
 
         # define input specification of model
         input_spec = tf.TensorSpec((1, 224, 224, 3), tf.float32, name = 'input',)
