@@ -2,6 +2,7 @@ import tensorflow as tf
 import tf2onnx
 from pathlib import Path
 import traceback
+import onnx
 
 def export2ONNX():
     try:
@@ -10,7 +11,7 @@ def export2ONNX():
         model = tf.keras.models.load_model(str(model_path))
 
         # define input specification of model
-        input_spec = tf.TensorSpec((1, 224, 224, 3), tf.float32, name = 'input',)
+        input_spec = tf.TensorSpec((1, 224, 224, 3), dtype = tf.float32, name = 'image_input',)
 
         # define output path to save the model
         out_dir = Path("ExportedModels/Exported")
@@ -18,12 +19,13 @@ def export2ONNX():
         output_path = out_dir / "onnxmodel.onnx"
 
         # convert to .onnx format
-        tf2onnx.convert.from_keras(
+        onnx_model, _ = tf2onnx.convert.from_keras(
             model,
             input_signature = input_spec,
             opset = 13,
-            output_path = str(output_path)
         )
+
+        onnx.save(onnx_model, out_dir)
 
         print("Model saved")
 
