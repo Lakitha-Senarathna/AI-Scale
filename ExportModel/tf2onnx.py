@@ -25,7 +25,7 @@ def export2ONNX():
             opset = 13,
         )
 
-        onnx.save(onnx_model, out_dir)
+        onnx.save(onnx_model, output_path)
 
         print("Model saved")
 
